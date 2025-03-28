@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-function App() {
+export default function App() {
+  const [progress, setProgress] = useState(0);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          setTimeout(() => navigate('/home'), 500); // Navigate after a short delay
+          return 100;
+        }
+        return prev + 2;
+      });
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, [navigate]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='flex justify-center flex-col gap-8 items-center h-screen bg-[var(--bg)] tracking-widest'>
+      <div className='text-8xl text-cyan-400'>Cyber Guard</div>
+      <div className='border border-gray-700 rounded-full w-1/2 h-3 bg-none overflow-hidden'>
+        <div 
+          className='bg-cyan-400 h-full transition-all duration-300 ease-in-out'
+          style={{ width: `${progress}%` }}
+        ></div>
+      </div>
+      <p className='text-gray-500'>Loading... {progress}%</p>
     </div>
   );
 }
-
-export default App;
