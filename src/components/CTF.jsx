@@ -4,6 +4,8 @@ import Website1 from './Website1'
 import Login1 from './Login1'
 import SE1 from './SE1'
 import Pwd from './Pwd'
+import USB1 from './USB1'
+
 
 export default function CTF() {
   const [scenarios, setScenarios] = useState([
@@ -491,10 +493,49 @@ export default function CTF() {
     {
       id: 7,
       name: "USB Drop Attack",
-      type: "physical-security",
+      type: "usb-drop",
       difficulty: "medium",
       description: "Respond to a physical security breach involving malicious USB devices",
-      component: null
+      component: USB1,
+      scene: [
+        {
+          phishing: true,
+          sus: {
+            options: ['Legitimate USB', 'Malicious USB', 'Company USB'],
+            answer: 'Malicious USB',
+            resp: false,
+            clicked: false
+          },
+          title: {
+            name: 'USB Found',
+            value: 'You found a USB drive!',
+            options: ['Safe to use', 'Potential security risk', 'Company property'],
+            answer: 'Potential security risk',
+            clicked: false
+          },
+          action: {
+            name: 'Initial Action',
+            value: 'Do you want to plug it into your PC?',
+            options: ['Yes, plug it in', 'No, report to IT', 'Check with colleagues first'],
+            answer: 'No, report to IT',
+            clicked: false
+          },
+          warning: {
+            name: 'Security Warning',
+            value: 'Unknown USB devices can contain malware that automatically executes when connected',
+            options: ['Important security advice', 'Optional guideline', 'Technical information'],
+            answer: 'Important security advice',
+            clicked: false
+          },
+          consequence: {
+            name: 'Potential Outcome',
+            value: 'Connecting unknown USB devices can lead to ransomware, data theft, or system compromise',
+            options: ['Real threat', 'Exaggerated risk', 'Minor concern'],
+            answer: 'Real threat',
+            clicked: false
+          }
+        }
+      ]
     },
     {
       id: 8,
@@ -548,6 +589,10 @@ export default function CTF() {
       if (scene?.phishing) {
         count = Object.keys(scene.content).length;
       }
+    } else if (scenario.type === 'usb-drop') {
+      // Count the number of steps with options for USB Drop Attack
+      const steps = scenario.scene[0]?.steps || [];
+      count = steps.filter(step => step.options && step.options.length > 0).length;
     } else if (scenario.type === 'credential-theft') {
       const scene = scenario.scene[0];
       if (scene?.phishing) {
@@ -563,7 +608,7 @@ export default function CTF() {
   };
 
   useEffect(() => {
-    if (selectedScenario && selectedScenario.type !== 'password-security') {
+    if (selectedScenario && selectedScenario.type !== 'password-security' && selectedScenario.type !== 'usb-drop') {
       const clickableItems = getClickableItems(selectedScenario);
       const allElementsClicked = clickedElements.length === clickableItems;
 
@@ -684,6 +729,8 @@ export default function CTF() {
                 selectedMail={selectedMail}
                 handleMailClick={handleMailClick}
                 handleElementClick={handleElementClick}
+                setLevelCleared={setLevelCleared}
+                setLevelFailed={setLevelFailed}
               />
             )}
             {selectedScenario.type !== 'password-security' && (
