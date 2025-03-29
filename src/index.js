@@ -7,6 +7,7 @@ import Layout from './Layout';
 import Home from './components/Home';   
 import Hub from './components/Hub';
 import CTF from './components/CTF';
+import Quiz from './components/Quiz';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -17,7 +18,7 @@ root.render(
           <Route index element={<Home />} />
           <Route path='/home/:dept' element={<Hub />} />
           <Route path='/home/:dept/ctf' element={<CTF />} />
-          <Route path='/home/:dept/quiz' element={<CTF />} />
+          <Route path='/home/:dept/quiz' element={<Quiz />} />
           <Route path='/home/:dept/misson' element={<CTF />} />
         </Route>
       </Routes>

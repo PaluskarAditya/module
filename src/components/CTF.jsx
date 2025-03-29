@@ -5,9 +5,11 @@ import Login1 from './Login1'
 import SE1 from './SE1'
 import Pwd from './Pwd'
 import USB1 from './USB1'
-
+import { useNavigate, useParams } from 'react-router-dom'
 
 export default function CTF() {
+  const navigate = useNavigate();
+  const params = useParams();
   const [scenarios, setScenarios] = useState([
     {
       id: 1,
@@ -543,7 +545,76 @@ export default function CTF() {
       type: "malware",
       difficulty: "medium",
       description: "Identify and block malicious software masquerading as legitimate updates",
-      component: null
+      component: null,
+      scene: [
+        {
+          phishing: true,
+          sus: {
+            options: ['Legitimate Update', 'Malware Update', 'System Update'],
+            answer: 'Malware Update',
+            resp: false,
+            clicked: false
+          },
+          content: {
+            popupTitle: {
+              name: 'Popup Title',
+              value: 'Adobe Flash Player Update Required',
+              options: ['Legitimate Adobe Update', 'Fake Update Notice', 'System Notification'],
+              answer: 'Fake Update Notice',
+              clicked: false
+            },
+            updateMessage: {
+              name: 'Update Message',
+              value: 'Your Adobe Flash Player is out of date. Please update now to access video content.',
+              options: ['Valid Update Request', 'Deceptive Message', 'Normal Prompt'],
+              answer: 'Deceptive Message',
+              clicked: false
+            },
+            publisher: {
+              name: 'Software Publisher',
+              value: 'Publisher: Adobe Systems (Unverified)',
+              options: ['Verified Publisher', 'Unverified Source', 'Unknown Publisher'],
+              answer: 'Unverified Source',
+              clicked: false
+            },
+            fileDetails: {
+              name: 'File Details',
+              value: 'flash_player_update.exe (2.1 MB)',
+              options: ['Legitimate File', 'Suspicious Executable', 'Normal Update File'],
+              answer: 'Suspicious Executable',
+              clicked: false
+            },
+            downloadSource: {
+              name: 'Download Source',
+              value: 'http://adobe-flash-update.net/download',
+              options: ['Official Adobe Domain', 'Impersonation Domain', 'Trusted Source'],
+              answer: 'Impersonation Domain',
+              clicked: false
+            },
+            securityWarning: {
+              name: 'Security Warning',
+              value: 'Windows Defender is temporarily disabled for this installation',
+              options: ['Normal Behavior', 'Security Risk', 'Standard Practice'],
+              answer: 'Security Risk',
+              clicked: false
+            },
+            updateButton: {
+              name: 'Update Button',
+              value: 'Update Now (Required)',
+              options: ['Safe Action', 'Malicious Prompt', 'Normal Update'],
+              answer: 'Malicious Prompt',
+              clicked: false
+            },
+            certificateStatus: {
+              name: 'Certificate Status',
+              value: 'Digital Signature: Invalid',
+              options: ['Valid Certificate', 'Invalid Signature', 'Expired Certificate'],
+              answer: 'Invalid Signature',
+              clicked: false
+            }
+          }
+        }
+      ]
     },
     {
       id: 9,
@@ -686,46 +757,50 @@ export default function CTF() {
   }
 
   return (
-    <div className='w-screen h-screen bg-[var(--bg)] text-white pt-[4.5rem] px-5 pb-5'>
-      {levelCleared && <div className='h-screen fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-black/50'>
-        <div className='flex flex-col gap-2 bg-white rounded-lg p-5 text-black justify-center items-center tracking-widest'>
-          <h1 className='text-black text-2xl'>Level Cleared!</h1>
-          <p className='text-sm text-gray-500'>You have successfully cleared the level.</p>
-          <button className='text-cyan-400 hover:text-cyan-300 transition-colors border-2 border-cyan-400 rounded-md p-1 text-xs w-max' onClick={() => { setSelectedScenario(null); setLevelCleared(false) }}>Back to Scenarios</button>
+    <div className='w-full z-0 min-h-screen bg-gradient-to-b from-gray-900 to-black text-gray-300 pt-[5rem] px-8 pb-8 tracking-wider overflow-hidden'>
+      {levelCleared && <div className='h-screen fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-black/70 backdrop-blur-sm'>
+        <div className='flex flex-col gap-3 bg-black/50 rounded-xl p-6 justify-center items-center border border-emerald-500/30 hover:border-emerald-500/50 hover:bg-emerald-500/5 transition-all duration-300'>
+          <h1 className='text-lg text-emerald-400'>Level Cleared!</h1>
+          <p className='text-xs text-gray-400'>You have successfully cleared the level.</p>
+          <button className='text-xs text-emerald-400 hover:text-emerald-300 transition-colors border border-emerald-400/30 px-4 py-2 rounded-lg hover:border-emerald-400/50 hover:bg-emerald-400/5' onClick={() => { setSelectedScenario(null); setLevelCleared(false) }}>Back to Scenarios</button>
         </div>
       </div>}
 
-      {levelFailed && <div className='h-screen fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-black/50'>
-        <div className='flex flex-col gap-2 bg-white rounded-lg p-5 text-black justify-center items-center tracking-widest'>
-          <h1 className='text-red-500 text-2xl'>Level Not Cleared</h1>
-          <p className='text-sm text-gray-500'>Some of your answers were incorrect. Try again!</p>
-          <button className='text-red-400 hover:text-red-300 transition-colors border-2 border-red-400 rounded-md p-1 text-xs w-max' onClick={() => { setSelectedScenario(null); setLevelFailed(false) }}>Back to Scenarios</button>
+      {levelFailed && <div className='h-screen fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-black/70 backdrop-blur-sm'>
+        <div className='flex flex-col gap-3 bg-black/50 rounded-xl p-6 justify-center items-center border border-rose-500/30 hover:border-rose-500/50 hover:bg-rose-500/5 transition-all duration-300'>
+          <h1 className='text-lg text-rose-400'>Level Not Cleared</h1>
+          <p className='text-xs text-gray-400'>Some of your answers were incorrect. Try again!</p>
+          <button className='text-xs text-rose-400 hover:text-rose-300 transition-colors border border-rose-400/30 px-4 py-2 rounded-lg hover:border-rose-400/50 hover:bg-rose-400/5' onClick={() => { setSelectedScenario(null); setLevelFailed(false) }}>Back to Scenarios</button>
         </div>
       </div>}
 
-      <div className='h-full flex flex-col gap-4'>
-        <div className='flex gap-2 items-center justify-between'>
-          <div className='flex gap-2 items-center'>
-            {selectedScenario && (
-              <div className='flex gap-5 items-center'>
-                <h1 className='text-lg'>{selectedScenario ? selectedScenario.name : 'Select a Scenario'}</h1>
-                <div className='flex gap-3 items-center'>
-                  <button
-                    onClick={() => setSelectedScenario(null)}
-                    className='text-cyan-400 hover:text-cyan-300 transition-colors border-2 border-cyan-400 rounded-md p-1 text-xs'
-                  >
-                    ← Back
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
+      <div className='h-full flex flex-col gap-3 max-w-7xl mx-auto'>
+      <button
+        onClick={() => navigate(`/home/${params.dept}`)}
+        className='text-xs text-indigo-400 hover:text-indigo-300 transition-colors border border-indigo-400/30 px-4 py-2 rounded-lg hover:border-indigo-400/50 hover:bg-indigo-400/5 mt-2'
+      >
+        ← Back to Hub
+      </button>
+        <div className='flex items-center justify-between'>
+          {selectedScenario && (
+            <div className='flex gap-5 items-center'>
+              <h1 className='text-base text-purple-400'>{selectedScenario ? selectedScenario.name : 'Select a Scenario'}</h1>
+              <button
+                onClick={() => setSelectedScenario(null)}
+                className='text-xs text-indigo-400 hover:text-indigo-300 transition-colors border border-indigo-400/30 px-4 py-2 rounded-lg hover:border-indigo-400/50 hover:bg-indigo-400/5'
+              >
+                ← Back to Scenarios
+              </button>
+            </div>
+          )}
         </div>
+
         {selectedScenario ? (
-          <div className='flex-1 flex gap-3'>
+          <div className='flex-1 flex flex-col lg:flex-row gap-6'>
             {selectedScenario.component && (
               <selectedScenario.component
                 selectedScenario={selectedScenario}
+                setSelectedScenario={setSelectedScenario}
                 selectedMail={selectedMail}
                 handleMailClick={handleMailClick}
                 handleElementClick={handleElementClick}
@@ -734,40 +809,52 @@ export default function CTF() {
               />
             )}
             {selectedScenario.type !== 'password-security' && (
-              <div className='w-1/4 bg-gray-800 rounded-lg flex flex-col'>
-                <div className='flex flex-col p-3 border-b border-gray-700'>
-                  <h1 className='text-white text-sm'>Actions</h1>
-                  <p className='text-gray-500 text-xs'>Select elements to perform Investigation</p>
+              <div className='w-full lg:w-1/4 bg-black/50 rounded-xl border border-purple-500/30'>
+                <div className='flex flex-col p-4 border-b border-purple-500/20'>
+                  <h1 className='text-purple-400 text-sm'>Actions</h1>
+                  <p className='text-gray-400 text-xs mt-1'>Select elements to perform Investigation</p>
                 </div>
                 {!susAnswer && !selectedElement && selectedScenario.type === 'phishing' && selectedMail?.phishing ?
-                  <div className='flex-1 flex flex-col gap-2 p-3 overflow-y-auto'>
-                    <h1 className='text-sm'>What do you think about this mail?</h1>
+                  <div className='flex-1 flex flex-col gap-3 p-4'>
+                    <h1 className='text-xs text-gray-300'>What do you think about this mail?</h1>
                     <div className='flex flex-col gap-2'>
-                      {selectedMail.sus.options.map(el => <div onClick={() => handleSusClick(el)} className='p-2 text-xs text-white border-2 border-cyan-400 rounded-lg text-sm cursor-pointer'>{el}</div>)}
+                      {selectedMail.sus.options.map(el => 
+                        <div onClick={() => handleSusClick(el)} 
+                          className='p-3 text-xs text-gray-300 border border-purple-500/30 rounded-lg cursor-pointer hover:border-purple-500/50 hover:bg-purple-500/5 transition-all duration-300'
+                        >
+                          {el}
+                        </div>
+                      )}
                     </div>
                   </div>
                   : selectedElement && (
-                    <div className='flex-1 p-3 overflow-y-auto flex flex-col gap-2'>
-                      <h1 className='text-white text-sm'>Investigation options for {selectedElement.name}</h1>
+                    <div className='flex-1 p-4 flex flex-col gap-3'>
+                      <h1 className='text-xs text-gray-300'>Investigation options for {selectedElement.name}</h1>
                       <div className='flex flex-col gap-2'>
-                        {selectedElement.options.map(el => <div onClick={() => handleAnswerClick(el)} className='p-2 text-xs text-white border-2 border-cyan-400 rounded-lg text-sm cursor-pointer'>{el}</div>)}
+                        {selectedElement.options.map(el => 
+                          <div onClick={() => handleAnswerClick(el)} 
+                            className='p-3 text-xs text-gray-300 border border-purple-500/30 rounded-lg cursor-pointer hover:border-purple-500/50 hover:bg-purple-500/5 transition-all duration-300'
+                          >
+                            {el}
+                          </div>
+                        )}
                       </div>
                     </div>
                   )}
                 {selectedScenario.scene[0]?.phishing && (
-                  <div className='p-3 border-t border-gray-700'>
-                    <div className='flex flex-col gap-2'>
-                      <div className='flex justify-between text-xs'>
+                  <div className='p-4 border-t border-purple-500/20'>
+                    <div className='flex flex-col gap-3'>
+                      <div className='flex justify-between text-xs text-gray-400'>
                         <span>Clickable Items:</span>
                         <span>{getClickableItems(selectedScenario)}</span>
                       </div>
-                      <div className='flex justify-between text-xs text-cyan-400'>
+                      <div className='flex justify-between text-xs text-emerald-400'>
                         <span>Score:</span>
                         <span>{score}</span>
                       </div>
-                      <div className='flex justify-between text-xs text-pink-400'>
-                        <span>Investigated Elements:</span>
-                        <span>{clickedElements.join(', ')}</span>
+                      <div className='flex justify-between text-xs text-purple-400'>
+                        <span>Investigated:</span>
+                        <span className='truncate ml-2'>{clickedElements.join(', ')}</span>
                       </div>
                     </div>
                   </div>
@@ -776,12 +863,16 @@ export default function CTF() {
             )}
           </div>
         ) : (
-          <div className='grid grid-cols-4 gap-3 flex-1 overflow-y-auto'>
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-purple-400/20 scrollbar-track-transparent hover:scrollbar-thumb-purple-400/30'>
             {scenarios.map((scenario) => (
-              <div onClick={() => handleScenarioClick(scenario)} key={scenario.id} className='p-3 border-2 border-pink-400 rounded-lg cursor-pointer'>
-                <h1 className='text-lg'>{scenario.name}</h1>
-                <p className='text-gray-500 text-sm'>{scenario.description}</p>
-                <p className='text-xs text-gray-400 mt-2'>Difficulty: {scenario.difficulty}</p>
+              <div 
+                onClick={() => handleScenarioClick(scenario)} 
+                key={scenario.id} 
+                className='transform-gpu p-6 border border-purple-500/30 rounded-xl bg-black/50 backdrop-blur-sm cursor-pointer hover:border-purple-500 hover:bg-purple-500/20 group hover:text-white hover:shadow-[0_0_25px_rgba(168,85,247,0.3)] transition-all duration-300'
+              >
+                <h1 className='text-base text-purple-400 mb-2 group-hover:text-white'>{scenario.name}</h1>
+                <p className='text-gray-400 text-xs leading-relaxed group-hover:text-white'>{scenario.description}</p>
+                <p className='text-xs text-emerald-400 mt-3 group-hover:text-white'>Difficulty: {scenario.difficulty}</p>
               </div>
             ))}
           </div>
