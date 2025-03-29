@@ -8,6 +8,7 @@ body {
 
 .sim {
   font-family: 'Inter', sans-serif !important;
+<<<<<<< HEAD
 }
 
 /* Custom scrollbar styling */
@@ -60,4 +61,6 @@ body {
 
 .cyan-scroll::-webkit-scrollbar-thumb:hover {
   background: rgb(244, 114, 182);
+=======
+>>>>>>> 408156f (Most scenarios completed)
 }

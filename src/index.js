@@ -7,7 +7,10 @@ import Layout from './Layout';
 import Home from './components/Home';   
 import Hub from './components/Hub';
 import CTF from './components/CTF';
+<<<<<<< HEAD
 import Quiz from './components/Quiz';
+=======
+>>>>>>> 408156f (Most scenarios completed)
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -18,7 +21,11 @@ root.render(
           <Route index element={<Home />} />
           <Route path='/home/:dept' element={<Hub />} />
           <Route path='/home/:dept/ctf' element={<CTF />} />
+<<<<<<< HEAD
           <Route path='/home/:dept/quiz' element={<Quiz />} />
+=======
+          <Route path='/home/:dept/quiz' element={<CTF />} />
+>>>>>>> 408156f (Most scenarios completed)
           <Route path='/home/:dept/misson' element={<CTF />} />
         </Route>
       </Routes>
